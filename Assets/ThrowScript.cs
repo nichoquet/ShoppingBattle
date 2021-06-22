@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThrowScript : MonoBehaviour
 {
     public GameObject ammunition;
+    public Vector3 throwForce = new Vector3(0, 500, 5000);
     // Start is called before the first frame update
     void Start()
     {
@@ -15,10 +16,8 @@ public class ThrowScript : MonoBehaviour
     void Update()
     {
         if (Input.GetButtonDown("Fire1")) {
-            Vector3 pos = transform.position;
-            Quaternion rotation = transform.rotation;
             GameObject obj = Instantiate(ammunition, transform.position, transform.rotation);
-            obj.GetComponent<Rigidbody>().AddForce(new Vector3(0, 50, 500));
+            obj.GetComponent<Rigidbody>().AddForce(Camera.main.transform.TransformDirection(throwForce));
         }
     }
 }
