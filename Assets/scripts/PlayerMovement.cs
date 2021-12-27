@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
     private CharacterController controller;
+    private Rigidbody rigidbody;
     private Vector3 playerVelocity;
     public bool groundedPlayer;
     public float playerSpeed = 200.0f;
@@ -23,7 +24,11 @@ public class PlayerMovement : MonoBehaviour
         input = new @PlayerInputs();
         meleeWeapon = gameObject.GetComponentInChildren<MeleeWeapon>();
         input.Player.Move.performed += ctx => this.movement(ctx);
-        input.Player.Fire.performed += ctx => meleeWeapon.Fire();
+        input.Player.Fire.performed += ctx =>
+        {
+            // rigidbody.AddForce(new Vector3(0,50,0));
+            meleeWeapon.Fire();
+        };
     }
 
     private void movement(CallbackContext ctx) {
@@ -54,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
+        rigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -70,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
             float facing = transform.eulerAngles.y;
             Vector3 myTurnedInputs = Quaternion.Euler(0, facing, 0) * move;
             Vector3 trueMove = myTurnedInputs * Time.deltaTime * playerSpeed;
+            // rigidbody.AddForce(trueMove);
+            // trueMove.y = 0;
             controller.Move(trueMove);
         }
 
