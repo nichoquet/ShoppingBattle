@@ -11,49 +11,47 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 playerVelocity;
     public bool groundedPlayer;
-    public float playerSpeed = 200.0f;
+    public float playerSpeed = 200;
     public float jumpHeight = 1.0f;
     public float gravityValue = -9.81f;
     public bool moveInputPressed;
     Vector2 currentMovement;
     public @PlayerInputs input;
     private MeleeWeapon meleeWeapon;
+    private AttackTarget attackTarget;
 
     private void Awake()
     {
         input = new @PlayerInputs();
         meleeWeapon = gameObject.GetComponentInChildren<MeleeWeapon>();
-        input.Player.Move.performed += ctx => this.movement(ctx);
-        input.Player.Fire.performed += ctx =>
+        // input.Player.Move.performed += ctx => this.movement(ctx);
+        //input.Player.Fire.performed += ctx =>
+        //{
+        //    // rigidbody.AddForce(new Vector3(0,50,0));
+        //    meleeWeapon.Fire();
+        //};
+        attackTarget = gameObject.GetComponent<AttackTarget>();
+    }
+
+    public void OnMove(CallbackContext ctx)
+    {
+        this.currentMovement = ctx.ReadValue<Vector2>();
+        this.moveInputPressed = this.currentMovement.x != 0 || this.currentMovement.y != 0;
+    }
+
+    public void OnJump(CallbackContext ctx)
+    {
+        if (attackTarget.isDown)
         {
-            // rigidbody.AddForce(new Vector3(0,50,0));
-            meleeWeapon.Fire();
-        };
+            attackTarget.getUp();
+        }
+        //this.currentMovement = ctx.ReadValue<Vector2>();
+        //this.moveInputPressed = this.currentMovement.x != 0 || this.currentMovement.y != 0;
     }
 
     private void movement(CallbackContext ctx) {
         this.currentMovement = ctx.ReadValue<Vector2>();
         this.moveInputPressed = this.currentMovement.x != 0 || this.currentMovement.y != 0;
-        //groundedPlayer = controller.isGrounded;
-        //if (groundedPlayer && playerVelocity.y < 0)
-        //{
-        //    playerVelocity.y = 0f;
-        //}
-
-        //Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        //float facing = transform.eulerAngles.y;
-        //Vector3 myTurnedInputs = Quaternion.Euler(0, facing, 0) * move;
-        //Vector3 trueMove = myTurnedInputs * Time.deltaTime * playerSpeed;
-        //controller.Move(trueMove);
-
-        //// Changes the height position of the player..
-        //if (Input.GetButtonDown("Jump") && groundedPlayer)
-        //{
-        //    playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        //}
-
-        //playerVelocity.y += gravityValue * Time.deltaTime;
-        //controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void Start()
@@ -65,30 +63,37 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        if (!attackTarget.isDown)
         {
-            playerVelocity.y = 0f;
-        }
-        if (moveInputPressed)
-        {
-            Vector3 move = new Vector3(currentMovement.x, 0, currentMovement.y);
-            float facing = transform.eulerAngles.y;
-            Vector3 myTurnedInputs = Quaternion.Euler(0, facing, 0) * move;
-            Vector3 trueMove = myTurnedInputs * Time.deltaTime * playerSpeed;
-            // rigidbody.AddForce(trueMove);
-            // trueMove.y = 0;
-            controller.Move(trueMove);
-        }
+            //groundedPlayer = controller.isGrounded;
+            //if (groundedPlayer && playerVelocity.y < 0)
+            //{
+            //    playerVelocity.y = 0f;
+            //}
+            if (moveInputPressed)
+            {
+                Vector3 move = new Vector3(currentMovement.x, 0, currentMovement.y);
+                float facing = transform.eulerAngles.y;
+                Vector3 myTurnedInputs = Quaternion.Euler(0, facing, 0) * move;
+                Vector3 trueMove = myTurnedInputs * Time.deltaTime * playerSpeed;
+                rigidbody.AddForce(trueMove);
+                // trueMove.y = 0;
+                // trueMove.y = 0;
+                Debug.Log("x: " + trueMove.x);
+                Debug.Log("y: " + trueMove.y);
+                Debug.Log("z: " + trueMove.z);
+                // controller.Move(trueMove);
+            }
 
-        // Changes the height position of the player..
-        //if (Input.GetButtonDown("Jump") && groundedPlayer)
-        //{
-        //    playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        //}
+            // Changes the height position of the player..
+            //if (Input.GetButtonDown("Jump") && groundedPlayer)
+            //{
+            //    playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            //}
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+            // playerVelocity.y += gravityValue * Time.deltaTime;
+            // controller.Move(playerVelocity * Time.deltaTime);
+        }
     }
 
     private void OnEnable()

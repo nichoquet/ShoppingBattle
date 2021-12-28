@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public class MeleeWeapon : MonoBehaviour
 {
     public float forceApplied = 50;
     Animator m_Animator;
+    private Collider collider;
 
     void Start()
     {
         m_Animator = gameObject.transform.parent.GetComponent<Animator>();
+        collider = gameObject.GetComponent<Collider>();
+        collider.enabled = false;
     }
 
     void OnCollisionEnter(Collision col)
@@ -25,9 +29,23 @@ public class MeleeWeapon : MonoBehaviour
         //}
     }
 
-    public void Fire()
+    public void Fire(CallbackContext context)
     {
-        m_Animator.SetTrigger("Fire");
+        if (context.performed)
+        {
+            m_Animator.SetTrigger("Fire");
+        }
+    }
+
+    public void OnAnimationStart()
+    {
+        collider.enabled = true;
+    }
+
+    public void OnAnimationEnd()
+    {
+        collider.enabled = false;
+
     }
 
     // Update is called once per frame

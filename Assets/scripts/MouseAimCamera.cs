@@ -6,22 +6,22 @@ using static UnityEngine.InputSystem.InputAction;
 public class MouseAimCamera : MonoBehaviour
 {
     public GameObject target;
-    public float rotateSpeed = 2555;
+    public float rotateSpeed = 10f;
     Vector3 offset;
     Vector2 currentMouseValue;
     bool isMouseMoving;
     public float desireAngle;
-    @PlayerInputs input;
+    // @PlayerInputs input;
 
     void Start()
     {
         target = transform.parent.gameObject;
-        input = target.GetComponent<PlayerMovement>().input;
+        // input = target.GetComponent<PlayerMovement>().input;
         offset = target.transform.position - transform.position;
-        input.Player.Look.performed += handleLook;
+        // input.Player.Look.performed += handleLook;
     }
 
-    private void handleLook(CallbackContext ctx)
+    public void handleLook(CallbackContext ctx)
     {
         Vector2 newMouseValue = ctx.ReadValue<Vector2>();
         this.isMouseMoving = this.currentMouseValue.x != newMouseValue.x;
