@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &44837627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 44837628}
+  - component: {fileID: 44837629}
+  - component: {fileID: 2244492268026562440}
+  m_Layer: 9
+  m_Name: GrabItems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &44837628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44837627}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_Children: []
+  m_Father: {fileID: 7726004536228875521}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &44837629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44837627}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2244492268026562440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44837627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae33203f4659dc844ba605c4efa2d290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seenObjects: []
 --- !u!1 &2101880497
 GameObject:
   m_ObjectHideFlags: 0
@@ -4903,6 +4961,8 @@ MonoBehaviour:
   target: {fileID: 8224379949023717805}
   rotateSpeed: 100
   desireAngle: 0
+  distance: 10
+  sensivity: 4
 --- !u!1 &6007567143075649973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4913,8 +4973,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7953432265470090904}
   - component: {fileID: 747399770298414190}
+  - component: {fileID: 6894477372533530350}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: Hand
   m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4953,6 +5014,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6894477372533530350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6007567143075649973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7160976fe97043b46b4f84d6b8ee0e29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 36705548}
+  grabItem: {fileID: 2244492268026562440}
+  heldItem: {fileID: 0}
 --- !u!1 &8224379949023717805
 GameObject:
   m_ObjectHideFlags: 0
@@ -4992,6 +5068,7 @@ Transform:
   - {fileID: 661700460640752167}
   - {fileID: 7953432265470090904}
   - {fileID: 2101880500}
+  - {fileID: 44837628}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5087,7 +5164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundedPlayer: 0
-  playerSpeed: 200
+  playerSpeed: 50
   jumpHeight: 1
   gravityValue: -9.81
   moveInputPressed: 0

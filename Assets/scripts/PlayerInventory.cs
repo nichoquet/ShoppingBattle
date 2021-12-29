@@ -8,11 +8,11 @@ public class PlayerInventory : MonoBehaviour
     // Start is called before the first frame update
     private List<GameObject> inventory;
     public int inventorySize = 4;
-    private int indexSelected = 0;
+    private int indexSelected = -1;
     public UnityEvent<GameObject> onPlayerSelectedInventoryItemChanged;
     void Start()
     {
-        inventory = new List<GameObject>(inventorySize);
+        inventory = new List<GameObject>();
     }
 
     public void OnNextSelectedItem()
@@ -29,6 +29,22 @@ public class PlayerInventory : MonoBehaviour
         }
         indexSelected = newIndex;
         onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+    }
+
+    public bool addItem(GameObject item)
+    {
+        if (inventory.Count < inventorySize)
+        {
+            inventory.Add(item);
+            if (inventory.Count == 1) {
+                indexSelected = 0;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     // Update is called once per frame

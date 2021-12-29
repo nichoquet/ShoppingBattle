@@ -306,7 +306,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8db7673d-a953-435a-aa24-9db3a07935e2"",
-                    ""path"": ""<Keyboard>/quote"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
