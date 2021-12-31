@@ -30,8 +30,14 @@ public class HandScript : MonoBehaviour
         {
             Destroy(heldItem);
         }
-        heldItem = Instantiate(item, new Vector3(), Quaternion.Euler(0,0,0), transform);
+        Vector3 newPosition = transform.position;
+        Vector3 scale = item.transform.localScale;
+        newPosition.y += scale.y / 2;
+        scale = scale * 10;
+        heldItem = Instantiate(item, newPosition, transform.rotation, transform);
         heldItem.SetActive(true);
+        heldItem.transform.localScale = scale;
+        Debug.Log(heldItem.transform.position);
     }
 
     // Update is called once per frame

@@ -42,9 +42,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (inventory.Count < inventoryMaxSize)
         {
-            item.GetComponent<Rigidbody>().useGravity = false;
-            item.GetComponent<Rigidbody>().isKinematic = true;
             inventory.Add(item);
+            item.GetComponent<GameItem>().disableRigidBody();
             if (inventory.Count == 1) {
                 indexSelected = 0;
             }

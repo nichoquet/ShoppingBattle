@@ -9,7 +9,6 @@ public class GameItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,6 +22,16 @@ public class GameItem : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void enableRigidBody()
+    {
+        gameObject.AddComponent<Rigidbody>();
+    }
+
+    public void disableRigidBody()
+    {
+        Destroy(gameObject.GetComponent<Rigidbody>());
     }
 
     public void handleIsSeen(GameObject player)
