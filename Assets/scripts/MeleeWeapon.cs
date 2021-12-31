@@ -18,15 +18,15 @@ public class MeleeWeapon : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        Debug.Log("MeleeWeapon");
-        //if (col.gameObject.TryGetComponent(out AttackTarget attackTarget))
-        //{
-        //    Vector3 force = transform.position - col.transform.position;
-        //    force.Normalize();
-        //    Debug.Log(col.contacts[0].point * forceApplied);
-        //    col.gameObject.GetComponent<Rigidbody>().freezeRotation = true;
-        //    col.gameObject.GetComponent<Rigidbody>().AddForce(col.transform.forward * forceApplied);
-        //}
+        if (col.gameObject.TryGetComponent(out AttackTarget attackTarget))
+        {
+            //Vector3 force = transform.position - col.transform.position;
+            //force.Normalize();
+            //Debug.Log(col.contacts[0].point * forceApplied);
+            attackTarget.getHit(col.transform.forward);
+            //col.gameObject.GetComponent<Rigidbody>().freezeRotation = true;
+            //col.gameObject.GetComponent<Rigidbody>().AddForce(col.transform.forward * forceApplied);
+        }
     }
 
     public void Fire(CallbackContext context)

@@ -7,7 +7,7 @@ public class PlayerInventory : MonoBehaviour
 {
     // Start is called before the first frame update
     private List<GameObject> inventory;
-    public int inventorySize = 4;
+    public int inventoryMaxSize = 4;
     private int indexSelected = -1;
     public UnityEvent<GameObject> onPlayerSelectedInventoryItemChanged;
     void Start()
@@ -17,24 +17,33 @@ public class PlayerInventory : MonoBehaviour
 
     public void OnNextSelectedItem()
     {
-        indexSelected = (indexSelected + 1) % inventorySize;
-        onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+        if (inventory.Count > 0)
+        {
+            indexSelected = (indexSelected + 1) % inventory.Count;
+            onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+        }
     }
 
     public void OnLastSelectedItem()
     {
-        int newIndex = indexSelected - 1;
-        if (newIndex < 0) {
-            newIndex = inventorySize - 1;
+        if (inventory.Count > 0)
+        {
+            int newIndex = indexSelected - 1;
+            if (newIndex < 0)
+            {
+                newIndex = inventory.Count - 1;
+            }
+            indexSelected = newIndex;
+            onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
         }
-        indexSelected = newIndex;
-        onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
     }
 
     public bool addItem(GameObject item)
     {
-        if (inventory.Count < inventorySize)
+        if (inventory.Count < inventoryMaxSize)
         {
+            item.GetComponent<Rigidbody>().useGravity = false;
+            item.GetComponent<Rigidbody>().isKinematic = true;
             inventory.Add(item);
             if (inventory.Count == 1) {
                 indexSelected = 0;

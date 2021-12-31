@@ -70,20 +70,20 @@ public class MouseAimCamera : MonoBehaviour
         // handleGrabableItems();
     }
 
-    private void handleGrabableItems() {
-        Ray ray = new Ray(transform.position, transform.forward);
-        int layerMask = LayerMask.GetMask("GameItems");
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask)) {
-            if (selectedItem != hit.collider.gameObject)
-            {
-                selectedItem = hit.collider.gameObject;
-                selectedItem.GetComponent<GameItem>().handleIsSeen(target);
-            }
-        }
-        else if (selectedItem != null)
-        {
-            selectedItem.GetComponent<GameItem>().handleIsNotSeen(target);
-            selectedItem = null;
-        }
-    }
+    //private void handleGrabableItems() {
+    //    Ray ray = new Ray(transform.position, transform.forward);
+    //    int layerMask = LayerMask.GetMask("GameItems");
+    //    if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask)) {
+    //        if (selectedItem != hit.collider.gameObject)
+    //        {
+    //            selectedItem = hit.collider.gameObject;
+    //            selectedItem.GetComponent<GameItem>().handleIsSeen(target);
+    //        }
+    //    }
+    //    else if (selectedItem != null)
+    //    {
+    //        selectedItem.GetComponent<GameItem>().handleIsNotSeen(target);
+    //        selectedItem = null;
+    //    }
+    //}
 }

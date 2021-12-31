@@ -19,7 +19,7 @@ public class HandScript : MonoBehaviour
             grabItem.seenObjects.ForEach((item) => {
                 if (playerInventory.addItem(item))
                 {
-                    Destroy(item);
+                    item.SetActive(false);
                 }
             });
         }
@@ -30,8 +30,8 @@ public class HandScript : MonoBehaviour
         {
             Destroy(heldItem);
         }
-        heldItem = item;
-        Instantiate(heldItem, transform);
+        heldItem = Instantiate(item, new Vector3(), Quaternion.Euler(0,0,0), transform);
+        heldItem.SetActive(true);
     }
 
     // Update is called once per frame

@@ -79,9 +79,9 @@ public class PlayerMovement : MonoBehaviour
                 rigidbody.AddForce(trueMove);
                 // trueMove.y = 0;
                 // trueMove.y = 0;
-                Debug.Log("x: " + trueMove.x);
-                Debug.Log("y: " + trueMove.y);
-                Debug.Log("z: " + trueMove.z);
+                //Debug.Log("x: " + trueMove.x);
+                //Debug.Log("y: " + trueMove.y);
+                //Debug.Log("z: " + trueMove.z);
                 // controller.Move(trueMove);
             }
 

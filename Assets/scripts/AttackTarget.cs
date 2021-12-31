@@ -25,18 +25,21 @@ public class AttackTarget : MonoBehaviour
         isDown = false;
     }
 
+    public void getHit(Vector3 force)
+    {
+        gameObject.GetComponent<Rigidbody>().freezeRotation = false;
+        gameObject.GetComponent<Rigidbody>().AddForce(force * forceApplied);
+        isDown = true;
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.name != "Terrain")
         {
             if (col.gameObject != gameObject && col.collider.tag == "MeleeWeapon")
             {
-                Debug.Log(col.gameObject.name);
-                Vector3 force = transform.position + col.transform.position;
-                force.Normalize();
-                gameObject.GetComponent<Rigidbody>().freezeRotation = false;
-                gameObject.GetComponent<Rigidbody>().AddForce(col.transform.forward * forceApplied);
-                isDown = true;
+                // getHit(col.transform.forward);
+                // Debug.Log(col.gameObject.name);
             }
         }
     }

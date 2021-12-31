@@ -11,19 +11,20 @@ public class GrabItemScript : MonoBehaviour
         seenObjects = new List<GameObject>();
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out GameItem gameItem))
+        if (other.gameObject.TryGetComponent(out GameItem gameItem))
         {
-            seenObjects.Remove(collision.gameObject);
+            seenObjects.Remove(other.gameObject);
             gameItem.handleIsNotSeen(transform.parent.gameObject);
         }
     }
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out GameItem gameItem))
+        if (other.gameObject.TryGetComponent(out GameItem gameItem))
         {
-            seenObjects.Add(collision.gameObject);
+            seenObjects.Add(other.gameObject);
             gameItem.handleIsSeen(transform.parent.gameObject);
         }
     }

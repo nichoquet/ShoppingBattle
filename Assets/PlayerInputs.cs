@@ -80,6 +80,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grab"",
+                    ""type"": ""Button"",
+                    ""id"": ""a24fc778-052c-4df9-aa5b-a1ef178b2bb1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -360,6 +369,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7613562d-b1da-4154-98b6-9b667122c8c7"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""NextPlayerInvetoryItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""76fa712b-b695-4aab-911c-5944b25624d9"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
@@ -390,6 +410,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""LastPlayerInvetoryItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""962ea568-9b69-47fb-9168-c41ac803dc81"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""LastPlayerInvetoryItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""185e2647-9205-4160-bbe0-bc45dc82e289"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -981,6 +1023,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_NextPlayerInvetoryItem = m_Player.FindAction("NextPlayerInvetoryItem", throwIfNotFound: true);
         m_Player_LastPlayerInvetoryItem = m_Player.FindAction("LastPlayerInvetoryItem", throwIfNotFound: true);
+        m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1058,6 +1101,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_NextPlayerInvetoryItem;
     private readonly InputAction m_Player_LastPlayerInvetoryItem;
+    private readonly InputAction m_Player_Grab;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1068,6 +1112,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @NextPlayerInvetoryItem => m_Wrapper.m_Player_NextPlayerInvetoryItem;
         public InputAction @LastPlayerInvetoryItem => m_Wrapper.m_Player_LastPlayerInvetoryItem;
+        public InputAction @Grab => m_Wrapper.m_Player_Grab;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1095,6 +1140,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LastPlayerInvetoryItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLastPlayerInvetoryItem;
                 @LastPlayerInvetoryItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLastPlayerInvetoryItem;
                 @LastPlayerInvetoryItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLastPlayerInvetoryItem;
+                @Grab.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                @Grab.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                @Grab.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1117,6 +1165,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @LastPlayerInvetoryItem.started += instance.OnLastPlayerInvetoryItem;
                 @LastPlayerInvetoryItem.performed += instance.OnLastPlayerInvetoryItem;
                 @LastPlayerInvetoryItem.canceled += instance.OnLastPlayerInvetoryItem;
+                @Grab.started += instance.OnGrab;
+                @Grab.performed += instance.OnGrab;
+                @Grab.canceled += instance.OnGrab;
             }
         }
     }
@@ -1279,6 +1330,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnNextPlayerInvetoryItem(InputAction.CallbackContext context);
         void OnLastPlayerInvetoryItem(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
