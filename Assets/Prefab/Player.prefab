@@ -5282,7 +5282,19 @@ MonoBehaviour:
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_DeviceRegainedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -5399,7 +5411,7 @@ MonoBehaviour:
       - m_Target: {fileID: 36705548}
         m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
         m_MethodName: OnNextSelectedItem
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5415,7 +5427,7 @@ MonoBehaviour:
       - m_Target: {fileID: 36705548}
         m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
         m_MethodName: OnLastSelectedItem
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5431,7 +5443,7 @@ MonoBehaviour:
       - m_Target: {fileID: 6894477372533530350}
         m_TargetAssemblyTypeName: HandScript, Assembly-CSharp
         m_MethodName: OnGrab
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5442,6 +5454,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a24fc778-052c-4df9-aa5b-a1ef178b2bb1
     m_ActionName: Player/Grab[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 36705548}
+        m_TargetAssemblyTypeName: PlayerInventory, Assembly-CSharp
+        m_MethodName: ThrowCurrentItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e983c59b-2307-4c5f-8365-eb476cfbaf63
+    m_ActionName: Player/Throw[/XInputControllerWindows/buttonNorth,/XInputControllerWindows1/buttonNorth,/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -5493,6 +5521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryMaxSize: 4
+  hand: {fileID: 6894477372533530350}
   onPlayerSelectedInventoryItemChanged:
     m_PersistentCalls:
       m_Calls:

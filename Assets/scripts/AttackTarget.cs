@@ -41,8 +41,11 @@ public class AttackTarget : MonoBehaviour
         {
             if (col.gameObject != gameObject && col.collider.tag == "MeleeWeapon")
             {
-                // getHit(col.transform.forward);
-                // Debug.Log(col.gameObject.name);
+                Debug.Log(col.collider.name);
+                if (col.collider.gameObject.GetComponent<MeleeWeapon>().enabled)
+                {
+                    getHit(col.transform.forward);
+                }
             }
         }
     }

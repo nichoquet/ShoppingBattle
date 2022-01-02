@@ -89,6 +89,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""e983c59b-2307-4c5f-8365-eb476cfbaf63"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -441,6 +450,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Grab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cf67dd8-cac1-4aea-9e6f-4618c2d969d7"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86fe0e97-f292-4162-a8ee-d187a6e75b10"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1035,6 +1066,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Player_NextPlayerInvetoryItem = m_Player.FindAction("NextPlayerInvetoryItem", throwIfNotFound: true);
         m_Player_LastPlayerInvetoryItem = m_Player.FindAction("LastPlayerInvetoryItem", throwIfNotFound: true);
         m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
+        m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1113,6 +1145,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_NextPlayerInvetoryItem;
     private readonly InputAction m_Player_LastPlayerInvetoryItem;
     private readonly InputAction m_Player_Grab;
+    private readonly InputAction m_Player_Throw;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1124,6 +1157,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @NextPlayerInvetoryItem => m_Wrapper.m_Player_NextPlayerInvetoryItem;
         public InputAction @LastPlayerInvetoryItem => m_Wrapper.m_Player_LastPlayerInvetoryItem;
         public InputAction @Grab => m_Wrapper.m_Player_Grab;
+        public InputAction @Throw => m_Wrapper.m_Player_Throw;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1154,6 +1188,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Grab.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
                 @Grab.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
                 @Grab.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGrab;
+                @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1179,6 +1216,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Grab.started += instance.OnGrab;
                 @Grab.performed += instance.OnGrab;
                 @Grab.canceled += instance.OnGrab;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
             }
         }
     }
@@ -1342,6 +1382,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnNextPlayerInvetoryItem(InputAction.CallbackContext context);
         void OnLastPlayerInvetoryItem(InputAction.CallbackContext context);
         void OnGrab(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

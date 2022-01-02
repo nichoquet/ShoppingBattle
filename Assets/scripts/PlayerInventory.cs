@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -9,32 +10,56 @@ public class PlayerInventory : MonoBehaviour
     private List<GameObject> inventory;
     public int inventoryMaxSize = 4;
     private int indexSelected = -1;
+    public HandScript hand;
     public UnityEvent<GameObject> onPlayerSelectedInventoryItemChanged;
     void Start()
     {
         inventory = new List<GameObject>();
     }
 
-    public void OnNextSelectedItem()
+    public void ThrowCurrentItem(CallbackContext context)
     {
-        if (inventory.Count > 0)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && hand.heldItem != null)
         {
-            indexSelected = (indexSelected + 1) % inventory.Count;
-            onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+            GameObject newObject = Instantiate(hand.heldItem, hand.transform.position, hand.transform.rotation);
+            newObject.transform.localScale = newObject.transform.localScale / 10;
+            // newObject.SetActive(true);
+            newObject.GetComponent<GameItem>().deactivateAsPlayerItem();
+            newObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0) + transform.forward * 500);
+            Destroy(inventory[indexSelected]);
+            Destroy(hand.heldItem);
+            inventory.RemoveAt(indexSelected);
+            if (inventory.Count == 0) {
+                indexSelected = -1;
+            }
         }
     }
 
-    public void OnLastSelectedItem()
+    public void OnNextSelectedItem(CallbackContext context)
     {
-        if (inventory.Count > 0)
-        {
-            int newIndex = indexSelected - 1;
-            if (newIndex < 0)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed) { 
+            if (inventory.Count > 0)
             {
-                newIndex = inventory.Count - 1;
+                indexSelected = (indexSelected + 1) % inventory.Count;
+                onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
             }
-            indexSelected = newIndex;
-            onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+        }
+    }
+
+    public void OnLastSelectedItem(CallbackContext context)
+    {
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        {
+            if (inventory.Count > 0)
+            {
+                int newIndex = indexSelected - 1;
+                if (newIndex < 0)
+                {
+                    newIndex = inventory.Count - 1;
+                }
+                indexSelected = newIndex;
+                onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+            }
         }
     }
 

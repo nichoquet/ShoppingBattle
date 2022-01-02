@@ -24,8 +24,11 @@ public class GrabItemScript : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out GameItem gameItem))
         {
-            seenObjects.Add(other.gameObject);
-            gameItem.handleIsSeen(transform.parent.gameObject);
+            if (gameItem.canBeTaken)
+            {
+                seenObjects.Add(other.gameObject);
+                gameItem.handleIsSeen(transform.parent.gameObject);
+            }
         }
     }
 

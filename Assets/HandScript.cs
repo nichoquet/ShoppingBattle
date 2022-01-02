@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class HandScript : MonoBehaviour
 {
@@ -13,16 +14,25 @@ public class HandScript : MonoBehaviour
     {
     }
 
-    public void OnGrab()
+    public void OnGrab(CallbackContext context)
     {
-        if (grabItem.seenObjects.Count > 0)
+        if (context.phase == InputActionPhase.Performed)
         {
-            grabItem.seenObjects.ForEach((item) => {
-                if (playerInventory.addItem(item))
+            if (grabItem.seenObjects.Count > 0)
+            {
+                for (int x = 0; x < grabItem.seenObjects.Count; x++)
                 {
-                    item.SetActive(false);
+                    if (playerInventory.addItem(grabItem.seenObjects[x]))
+                    {
+                        grabItem.seenObjects[x].SetActive(false);
+                        grabItem.seenObjects.RemoveAt(x);
+                        x--;
+                    }
                 }
-            });
+                //grabItem.seenObjects.ForEach((item) =>
+                //{
+                //});
+            }
         }
     }
 
