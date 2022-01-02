@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HandScript : MonoBehaviour
 {
@@ -26,8 +27,10 @@ public class HandScript : MonoBehaviour
     }
 
     public void onSelectionChanged(GameObject item) {
+        PlayerInput playerInputs = playerInventory.gameObject.GetComponent<PlayerInput>();
         if (heldItem != null)
         {
+            playerInputs.actions["Fire"].performed -= heldItem.GetComponent<MeleeWeapon>().Fire;
             Destroy(heldItem);
         }
         Vector3 newPosition = transform.position;
@@ -37,7 +40,8 @@ public class HandScript : MonoBehaviour
         heldItem = Instantiate(item, newPosition, transform.rotation, transform);
         heldItem.SetActive(true);
         heldItem.transform.localScale = scale;
-        Debug.Log(heldItem.transform.position);
+        playerInputs.actions["Fire"].performed += heldItem.GetComponent<MeleeWeapon>().Fire;
+        // Debug.Log(heldItem.transform.position);
     }
 
     // Update is called once per frame

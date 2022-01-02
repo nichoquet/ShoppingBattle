@@ -18,11 +18,12 @@ public class MeleeWeapon : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.TryGetComponent(out AttackTarget attackTarget))
+        if (col.gameObject.TryGetComponent(out AttackTarget attackTarget) && this.enabled)
         {
             //Vector3 force = transform.position - col.transform.position;
             //force.Normalize();
             //Debug.Log(col.contacts[0].point * forceApplied);
+            Debug.Log("Hello");
             attackTarget.getHit(col.transform.forward);
             //col.gameObject.GetComponent<Rigidbody>().freezeRotation = true;
             //col.gameObject.GetComponent<Rigidbody>().AddForce(col.transform.forward * forceApplied);

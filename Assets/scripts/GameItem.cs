@@ -24,14 +24,16 @@ public class GameItem : MonoBehaviour
 
     }
 
-    public void enableRigidBody()
+    public void deactivateAsPlayerItem()
     {
         gameObject.AddComponent<Rigidbody>();
     }
 
-    public void disableRigidBody()
+    public void activateAsPlayerItem()
     {
         Destroy(gameObject.GetComponent<Rigidbody>());
+        gameObject.GetComponent<MeleeWeapon>().enabled = true;
+        gameObject.GetComponent<Renderer>().material = defaultMaterial;
     }
 
     public void handleIsSeen(GameObject player)

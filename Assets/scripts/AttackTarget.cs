@@ -6,7 +6,6 @@ public class AttackTarget : MonoBehaviour
 {
     public float forceApplied = 50;
     public Quaternion initialRotation;
-    private PlayerMovement playerMovement;
     public bool isDown = false;
 
     void Start()
@@ -23,6 +22,10 @@ public class AttackTarget : MonoBehaviour
         transform.position = new Vector3(x, transform.position.y, z);
         gameObject.GetComponent<Rigidbody>().freezeRotation = true;
         isDown = false;
+        Vector3 targetRotation = gameObject.GetComponentInChildren<Camera>().transform.parent.localRotation.eulerAngles;
+        targetRotation.z = 0;
+        targetRotation.y = 0;
+        gameObject.GetComponentInChildren<Camera>().transform.parent.localRotation = Quaternion.Euler(targetRotation);
     }
 
     public void getHit(Vector3 force)

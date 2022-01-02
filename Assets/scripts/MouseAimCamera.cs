@@ -5,6 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class MouseAimCamera : MonoBehaviour
 {
+    public GameObject player;
     public GameObject target;
     public float rotateSpeed = 10f;
     Vector3 offset;
@@ -45,19 +46,95 @@ public class MouseAimCamera : MonoBehaviour
         {
             float horizontal = (currentMouseValue.x) * rotateSpeed * Time.deltaTime;
             float vertical = (currentMouseValue.y) * rotateSpeed * Time.deltaTime;
-            target.transform.Rotate(0, horizontal, 0);
+            // Debug.Log("Debut");
+            // float posY = vertical + target.transform.localRotation.y;
+            player.transform.Rotate(0, horizontal, 0);
+            Vector3 angles = target.transform.rotation.eulerAngles;
+            //Debug.Log(angles.x);
+            angles.x -= vertical;
+            if (angles.x > 180)
+            {
+                float trueYMin = 360 + YMin;
+                if (angles.x < trueYMin) {
+                    angles.x = trueYMin;
+                }
+            }
+            else
+            {
+                if (angles.x > YMax)
+                {
+                    //Debug.Log("Max");
+                    // Debug.Log(angles.x);
+                    angles.x = YMax;
+                }
+                else if (angles.x < YMin)
+                {
+                    angles.x = YMin;
+                    // Debug.Log("Min");
+                }
+            }
+            // angles.x = Mathf.Clamp(angles.x, YMin, YMax);
+            // Debug.Log(angles.x);
+            target.transform.rotation = Quaternion.Euler(angles);
+            //Debug.Log(posY);
 
-            currentX += currentMouseValue.x * rotateSpeed * Time.deltaTime;
-            currentY -= currentMouseValue.y * rotateSpeed * Time.deltaTime;
 
-            currentY = Mathf.Clamp(currentY, YMin, YMax);
+            //if (posY <= YMax && posY > YMin)
+            //{
+            //    transform.parent.Rotate(new Vector3(posY - transform.parent.localRotation.y, 0, 0));
+            //}
+            //posY = Mathf.Clamp(posY, YMin, YMax);
+            // transform.parent.localRotation = Quaternion.Euler();
 
-            Vector3 Direction = new Vector3(0, 0, -distance);
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            transform.position = target.transform.position + rotation * Direction;
+            //if (Input.GetMouseButton(0))
+            //{
+            //    float h = rotateSpeed * currentMouseValue.x;
+            //    float v = rotateSpeed * currentMouseValue.y;
 
-            transform.LookAt(target.transform.position);
-            
+            //    if (transform.eulerAngles.z + v <= 0.1f || transform.eulerAngles.z + v >= 179.9f)
+            //        v = 0;
+
+            //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + v);
+            //}
+            // float rotation = Mathf.Clamp(vertical, YMin + transform.rotation.eulerAngles.y, YMax - transform.rotation.eulerAngles.y);
+            //Vector3 rotation = new Vector3(0, currentMouseValue.y * rotateSpeed * Time.deltaTime, 0);
+            // transform.RotateAround(target.transform.position, new Vector3(1, 0, 0), vertical);
+            //if (vertical < 0)
+            //{
+            //}
+            //else if (vertical > 0)
+            //{
+            //    transform.RotateAround(target.transform.position, new Vector3(1, 0, 0), vertical);
+            //}
+
+            // float currentX = target.transform.rotation.x + horizontal;
+            // float currentY = target.transform.rotation.y;
+            //float moveX = target.transform.localEulerAngles.x + currentMouseValue.x * rotateSpeed * Time.deltaTime;
+            //float moveY = target.transform.localEulerAngles.y + currentMouseValue.x * rotateSpeed * Time.deltaTime;
+            //moveY = Mathf.Clamp(moveY, YMin, YMax);
+            //Debug.Log(currentX);
+            ////Debug.Log(this.currentX);
+            //currentX += currentMouseValue.x * rotateSpeed * Time.deltaTime;
+            //currentY -= currentMouseValue.y * rotateSpeed * Time.deltaTime;
+            //Debug.Log(currentX);
+
+            //currentY = Mathf.Clamp(currentY, YMin, YMax);
+
+            //Vector3 Direction = new Vector3(0, 0, -distance);
+            //Quaternion rotation = Quaternion.Euler(moveX, moveY, 0);
+            //transform.position = target.transform.position + rotation * Direction;
+            //Vector3 Direction = new Vector3(0, 0, -distance);
+            //Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+            //transform.position = target.transform.position + rotation * Direction;
+
+            //var rotationLR = transform.localEulerAngles;
+            //rotationLR.y += currentMouseValue.x * rotateSpeed;
+            //transform.rotation = Quaternion.AngleAxis(rotationLR.y, Vector3.up);
+            //var cameraRot = gameObject.transform.localEulerAngles;
+            //cameraRot.x += currentMouseValue.y * rotateSpeed;
+            //gameObject.transform.localRotation = Quaternion.AngleAxis(cameraRot.x, Vector3.right);
+            // transform.LookAt(target.transform.position);
+
             //target.transform.Rotate(0, horizontal, 0);
 
             //float desiredAngle = target.transform.eulerAngles.y;
@@ -65,7 +142,7 @@ public class MouseAimCamera : MonoBehaviour
             //Quaternion rotation = Quaternion.Euler(vertical, desiredAngle, 0);
             //transform.position = target.transform.position - (rotation * offset);
 
-            //transform.LookAt(target.transform);
+            transform.LookAt(target.transform.position);
         }
         // handleGrabableItems();
     }

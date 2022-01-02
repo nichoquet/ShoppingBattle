@@ -43,9 +43,10 @@ public class PlayerInventory : MonoBehaviour
         if (inventory.Count < inventoryMaxSize)
         {
             inventory.Add(item);
-            item.GetComponent<GameItem>().disableRigidBody();
+            item.GetComponent<GameItem>().activateAsPlayerItem();
             if (inventory.Count == 1) {
                 indexSelected = 0;
+                //onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
             }
             return true;
         }
