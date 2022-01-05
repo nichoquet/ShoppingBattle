@@ -40,17 +40,11 @@ public class HandScript : MonoBehaviour
         PlayerInput playerInputs = playerInventory.gameObject.GetComponent<PlayerInput>();
         if (heldItem != null)
         {
-            playerInputs.actions["Fire"].performed -= heldItem.GetComponent<MeleeWeapon>().Fire;
+            playerInputs.actions["Fire"].performed -= heldItem.GetComponent<GameItem>().OnFire;
             Destroy(heldItem);
         }
-        Vector3 newPosition = transform.position;
-        Vector3 scale = item.transform.localScale;
-        newPosition.y += scale.y / 2;
-        scale = scale * 10;
-        heldItem = Instantiate(item, newPosition, transform.rotation, transform);
-        heldItem.SetActive(true);
-        heldItem.transform.localScale = scale;
-        playerInputs.actions["Fire"].performed += heldItem.GetComponent<MeleeWeapon>().Fire;
+        heldItem = item.GetComponent<GameItem>().showInHands();
+        playerInputs.actions["Fire"].performed += heldItem.GetComponent<GameItem>().OnFire;
         // Debug.Log(heldItem.transform.position);
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInventory : MonoBehaviour
@@ -12,6 +13,7 @@ public class PlayerInventory : MonoBehaviour
     private int indexSelected = -1;
     public HandScript hand;
     public UnityEvent<GameObject> onPlayerSelectedInventoryItemChanged;
+    public RawImage selectedItemImage;
     void Start()
     {
         inventory = new List<GameObject>();
@@ -41,9 +43,14 @@ public class PlayerInventory : MonoBehaviour
             if (inventory.Count > 0)
             {
                 indexSelected = (indexSelected + 1) % inventory.Count;
-                onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+                this.onSelectedItemChanged(inventory[indexSelected]);
             }
         }
+    }
+
+    private void onSelectedItemChanged(GameObject item) {
+        selectedItemImage.texture = item.GetComponent<GameItem>().icon;
+        onPlayerSelectedInventoryItemChanged.Invoke(item);
     }
 
     public void OnLastSelectedItem(CallbackContext context)
@@ -58,7 +65,7 @@ public class PlayerInventory : MonoBehaviour
                     newIndex = inventory.Count - 1;
                 }
                 indexSelected = newIndex;
-                onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);
+                this.onSelectedItemChanged(inventory[indexSelected]);
             }
         }
     }
