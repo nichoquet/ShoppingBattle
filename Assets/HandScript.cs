@@ -37,14 +37,17 @@ public class HandScript : MonoBehaviour
     }
 
     public void onSelectionChanged(GameObject item) {
-        PlayerInput playerInputs = playerInventory.gameObject.GetComponent<PlayerInput>();
-        if (heldItem != null)
+        if (item != null)
         {
-            playerInputs.actions["Fire"].performed -= heldItem.GetComponent<GameItem>().OnFire;
-            Destroy(heldItem);
+            PlayerInput playerInputs = playerInventory.gameObject.GetComponent<PlayerInput>();
+            if (heldItem != null)
+            {
+                playerInputs.actions["Fire"].performed -= heldItem.GetComponent<GameItem>().OnFire;
+                Destroy(heldItem);
+            }
+            heldItem = item.GetComponent<GameItem>().showInHands(playerInventory.gameObject, gameObject);
+            playerInputs.actions["Fire"].performed += heldItem.GetComponent<GameItem>().OnFire;
         }
-        heldItem = item.GetComponent<GameItem>().showInHands();
-        playerInputs.actions["Fire"].performed += heldItem.GetComponent<GameItem>().OnFire;
         // Debug.Log(heldItem.transform.position);
     }
 

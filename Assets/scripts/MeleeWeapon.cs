@@ -12,7 +12,7 @@ public class MeleeWeapon : GameItemScript
 
     void Start()
     {
-        m_Animator = gameObject.transform.parent.GetComponent<Animator>();
+        // m_Animator = gameObject.transform.parent.GetComponent<Animator>();
         collider = gameObject.GetComponent<Collider>();
         collider.enabled = false;
     }
@@ -31,7 +31,7 @@ public class MeleeWeapon : GameItemScript
     //    }
     //}
 
-    public void OnFire(CallbackContext context)
+    public override void OnFire(CallbackContext context)
     {
         if (context.performed)
         {
@@ -39,7 +39,7 @@ public class MeleeWeapon : GameItemScript
         }
     }
 
-    public void OnAnimationStart()
+    public  void OnAnimationStart()
     {
         collider.enabled = true;
     }
@@ -54,26 +54,31 @@ public class MeleeWeapon : GameItemScript
     {
         //this.Fire();
     }
-    public void deactivateAsPlayerItem()
+    public override void deactivateAsPlayerItem(GameObject player, GameObject hand)
     {
-        base.deactivateAsPlayerItem();
+        base.deactivateAsPlayerItem(player, hand);
         gameObject.GetComponent<MeleeWeapon>().enabled = false;
     }
 
-    public void activateAsPlayerItem()
+    public override void activateAsPlayerItem(GameObject player, GameObject hand)
     {
-        base.activateAsPlayerItem();
+        base.activateAsPlayerItem(player, hand);
         gameObject.GetComponent<MeleeWeapon>().enabled = true;
     }
-
-    public override Vector3 GetTruePosition(Vector3 pos, Vector3 scale)
+    public override void ShowInHands(GameObject player, GameObject hand)
     {
-        return base.GetTruePosition(pos, scale);
+        base.ShowInHands(player, hand);
+        m_Animator = hand.GetComponent<Animator>();
     }
 
-    public override Vector3 GetTrueScale(Vector3 pos, Vector3 scale)
+    public override Vector3 GetTruePosition(Vector3 pos, Vector3 scale, Vector3 rotation)
     {
-        pos.y += scale.y / 2;
-        return base.GetTrueScale(pos, scale);
+        pos.y += scale.y / 20;
+        return base.GetTruePosition(pos, scale, rotation);
+    }
+
+    public override Vector3 GetTrueScale(Vector3 pos, Vector3 scale, Vector3 rotation)
+    {
+        return base.GetTrueScale(pos, scale, rotation);
     }
 }

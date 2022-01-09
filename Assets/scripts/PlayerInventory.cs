@@ -26,7 +26,7 @@ public class PlayerInventory : MonoBehaviour
             GameObject newObject = Instantiate(hand.heldItem, hand.transform.position, hand.transform.rotation);
             newObject.transform.localScale = newObject.transform.localScale / 10;
             // newObject.SetActive(true);
-            newObject.GetComponent<GameItem>().deactivateAsPlayerItem();
+            newObject.GetComponent<GameItem>().deactivateAsPlayerItem(gameObject, hand.gameObject);
             newObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0) + transform.forward * 500);
             Destroy(inventory[indexSelected]);
             Destroy(hand.heldItem);
@@ -34,6 +34,7 @@ public class PlayerInventory : MonoBehaviour
             if (inventory.Count == 0) {
                 indexSelected = -1;
             }
+            onSelectedItemChanged(null);
         }
     }
 
@@ -49,7 +50,14 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private void onSelectedItemChanged(GameObject item) {
-        selectedItemImage.texture = item.GetComponent<GameItem>().icon;
+        if (item != null)
+        {
+            selectedItemImage.texture = item.GetComponent<GameItem>().icon;
+        }
+        else
+        {
+            selectedItemImage.texture = null;
+        }
         onPlayerSelectedInventoryItemChanged.Invoke(item);
     }
 
@@ -75,7 +83,7 @@ public class PlayerInventory : MonoBehaviour
         if (inventory.Count < inventoryMaxSize)
         {
             inventory.Add(item);
-            item.GetComponent<GameItem>().activateAsPlayerItem();
+            item.GetComponent<GameItem>().activateAsPlayerItem(gameObject, hand.gameObject);
             if (inventory.Count == 1) {
                 indexSelected = 0;
                 //onPlayerSelectedInventoryItemChanged.Invoke(inventory[indexSelected]);

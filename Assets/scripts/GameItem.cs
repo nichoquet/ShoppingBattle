@@ -30,22 +30,22 @@ public class GameItem : MonoBehaviour
 
     }
 
-    public void deactivateAsPlayerItem()
+    public void deactivateAsPlayerItem(GameObject player, GameObject hand)
     {
         if (gameItemScript != null)
         {
-            gameItemScript.deactivateAsPlayerItem();
+            gameItemScript.deactivateAsPlayerItem(player, hand);
         }
         gameObject.AddComponent<Rigidbody>();
         gameObject.GetComponent<Collider>().enabled = true;
         canBeTaken = true;
     }
 
-    public void activateAsPlayerItem()
+    public void activateAsPlayerItem(GameObject player, GameObject hand)
     {
         if (gameItemScript != null)
         {
-            gameItemScript.activateAsPlayerItem();
+            gameItemScript.activateAsPlayerItem(player, hand);
         }
         Destroy(gameObject.GetComponent<Rigidbody>());
         gameObject.GetComponent<Renderer>().material = defaultMaterial;
@@ -53,17 +53,22 @@ public class GameItem : MonoBehaviour
         canBeTaken = false;
     }
 
-    public GameObject showInHands()
+    public GameObject showInHands(GameObject player, GameObject hand)
     {
-        Vector3 newPosition = transform.position;
+        Vector3 newPosition = hand.transform.position;
         Vector3 scale = transform.localScale;
+        Vector3 rotation = hand.transform.localRotation.eulerAngles;
         scale = scale * 10;
         if (gameItemScript != null)
         {
-            newPosition = gameItemScript.GetTruePosition(newPosition, scale);
-            scale = gameItemScript.GetTrueScale(newPosition, scale);
+            newPosition = gameItemScript.GetTruePosition(newPosition, scale, rotation);
+            scale = gameItemScript.GetTrueScale(newPosition, scale, rotation);
+            rotation = gameItemScript.GetTrueRotation(newPosition, scale, rotation);
         }
-        GameObject newItem = Instantiate(gameObject, newPosition, transform.rotation, transform);
+        GameObject newItem = Instantiate(gameObject, newPosition, Quaternion.Euler(rotation), hand.transform);
+        if (newItem.TryGetComponent(out GameItemScript newGameItemScript)) {
+            newGameItemScript.ShowInHands(player, hand);
+        }
         newItem.SetActive(true);
         newItem.transform.localScale = scale;
         return newItem;
