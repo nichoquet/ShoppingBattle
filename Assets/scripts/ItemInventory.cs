@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static UnityEngine.InputSystem.InputAction;
 
 public class ItemInventory : MonoBehaviour
 {
@@ -20,14 +19,12 @@ public class ItemInventory : MonoBehaviour
     protected virtual void onStart() { 
     }
 
-    public void OnNextSelectedItem(CallbackContext context)
+    public void SelectNextItem()
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed) { 
-            if (inventory.Count > 0)
-            {
-                indexSelected = (indexSelected + 1) % inventory.Count;
-                this.onSelectedItemChanged(inventory[indexSelected]);
-            }
+        if (inventory.Count > 0)
+        {
+            indexSelected = (indexSelected + 1) % inventory.Count;
+            this.onSelectedItemChanged(inventory[indexSelected]);
         }
     }
 
@@ -42,20 +39,17 @@ public class ItemInventory : MonoBehaviour
         }
     }
 
-    public void OnLastSelectedItem(CallbackContext context)
+    public void SelectPreviousItem()
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (inventory.Count > 0)
         {
-            if (inventory.Count > 0)
+            int newIndex = indexSelected - 1;
+            if (newIndex < 0)
             {
-                int newIndex = indexSelected - 1;
-                if (newIndex < 0)
-                {
-                    newIndex = inventory.Count - 1;
-                }
-                indexSelected = newIndex;
-                this.onSelectedItemChanged(inventory[indexSelected]);
+                newIndex = inventory.Count - 1;
             }
+            indexSelected = newIndex;
+            this.onSelectedItemChanged(inventory[indexSelected]);
         }
     }
 

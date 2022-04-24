@@ -17,6 +17,30 @@ public class FreezerInventory : ItemInventory
             selectedIndicators[indexSelected].GetComponent<Renderer>().material.color = Color.green;
         }
     }
+
+    protected void onFire (GameObject player)
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out InterractionWithSurroundingObjectsPlayer i))
+        {
+            SelectNextItem();
+            i.objCollidedWith = (gameObject, onFire);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out InterractionWithSurroundingObjectsPlayer i) && i.objCollidedWith.Item1 == gameObject)
+        {
+            i.objCollidedWith.Item1 = null;
+            i.objCollidedWith.Item2 = null;
+        }
+    }
+
     protected override void onStart()
     {
         Vector3 itemCounterCenter = itemCounter.transform.position;
