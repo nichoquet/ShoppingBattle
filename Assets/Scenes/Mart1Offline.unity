@@ -363,6 +363,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameHandler
       objectReference: {fileID: 0}
+    - target: {fileID: 8700647600428804141, guid: 51a17b303a517e14fbfb2f893d93c6a1, type: 3}
+      propertyPath: rows
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700647600428804141, guid: 51a17b303a517e14fbfb2f893d93c6a1, type: 3}
+      propertyPath: nbPerRows
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8700647600428804146, guid: 51a17b303a517e14fbfb2f893d93c6a1, type: 3}
       propertyPath: m_RootOrder
       value: 3
