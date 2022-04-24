@@ -8,20 +8,40 @@ public class ShelveContentSpawner : MonoBehaviour
     public List<GameObject> ItemsToSpawn;
     void Start()
     {
-        int sizeW = 2;
-        int nbHeight = 2;
-        for (int x = 0; x < sizeW; x+= 1)
+        int sizeW = 8;
+        int nbHeight = 4;
+        Collider collider = GetComponent<Collider>();
+        float positionPerFloor = collider.bounds.size.y/4;
+        float shelveWidth = collider.bounds.size.z;
+        float initialPositionZ = shelveWidth / 2;
+        for (int z = 0; z < nbHeight; z++)
         {
-            //for (int y = 0; x < 10; x++)
-            //{
-
-            for (int z = 1; z <= nbHeight; z+=2)
+            GameObject lastItem = null;
+            for (int x = 0; x < sizeW; x+= 1)
             {
-                GameObject item = Instantiate(ItemsToSpawn[0], this.transform.position + new Vector3(0, (0.3f*z), (0.2f * x) + 0.5f), ItemsToSpawn[0].transform.rotation);
-                item.transform.parent = this.transform;
+                float newXPosition = this.transform.position.z + initialPositionZ;
+                if(lastItem != null)
+                {
+                    newXPosition = lastItem.transform.position.z - lastItem.GetComponent<Collider>().bounds.size.z;
+                }
+                if (newXPosition < shelveWidth)
+                {
+                    GameObject itemToPlace = getRandomObject();
+                    GameObject item = Instantiate(itemToPlace, new Vector3(this.transform.position.x, this.transform.position.y + (positionPerFloor * z) + 0.3f, newXPosition), itemToPlace.transform.rotation);
+                    item.transform.parent = this.transform;
+                    if (lastItem == null)
+                    {
+                        item.transform.position = item.transform.position - new Vector3(0, 0, item.GetComponent<Collider>().bounds.size.z / 2);
+                    }
+                    item.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                    lastItem = item;
+                }
             }
-            // }
         }
+    }
+
+    private GameObject getRandomObject() {
+        return ItemsToSpawn[Random.Range(0, ItemsToSpawn.Count)];
     }
 
     // Update is called once per frame
